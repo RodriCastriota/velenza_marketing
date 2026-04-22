@@ -1,0 +1,6 @@
+.meta_token
+.gemini_key
+*.env
+__pycache__/
+*.pyc
+.DS_Store
