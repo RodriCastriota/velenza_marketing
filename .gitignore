@@ -1,5 +1,8 @@
 .meta_token
 .gemini_key
+.gcp_sa.json
+.sheet_url
+.anthropic_key
 *.env
 __pycache__/
 *.pyc

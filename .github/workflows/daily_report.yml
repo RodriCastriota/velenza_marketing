@@ -1,0 +1,56 @@
+name: Daily Velenza Paid Media Report
+
+on:
+  schedule:
+    # 08:50 AR (UTC-3) = 11:50 UTC
+    - cron: "50 11 * * *"
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: "Fecha YYYY-MM-DD (vacio = ayer AR)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run daily report
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHEET_URL: ${{ secrets.SHEET_URL }}
+        run: |
+          if [ -n "${{ github.event.inputs.target_date }}" ]; then
+            python scripts/daily_report.py "${{ github.event.inputs.target_date }}"
+          else
+            python scripts/daily_report.py
+          fi
+
+      - name: Commit report
+        run: |
+          git config user.name "velenza-bot"
+          git config user.email "bot@velenza.local"
+          git add reports/
+          if git diff --cached --quiet; then
+            echo "No hay nuevos reportes que commitear."
+          else
+            git commit -m "report: daily $(date -u +%Y-%m-%d)"
+            git push
+          fi
