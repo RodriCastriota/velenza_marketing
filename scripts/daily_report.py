@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from claude_analyzer import analyze, build_baseline
 from meta_api import fetch_daily_snapshot
+from notion_writer import upsert_report as notion_upsert
 from sheets_writer import push_snapshot
 
 REPORTS_DIR = ROOT / "reports"
@@ -31,12 +32,12 @@ def yesterday_ar() -> str:
 
 
 def run(target_date: str) -> Path:
-    print(f"[1/4] Pulling snapshot Meta {target_date}...")
+    print(f"[1/5] Pulling snapshot Meta {target_date}...")
     snapshot = fetch_daily_snapshot(target_date)
     print(f"      campaigns={len(snapshot['campaigns'])} "
           f"adsets={len(snapshot['adsets'])} ads={len(snapshot['ads'])}")
 
-    print(f"[2/4] Push a Google Sheets...")
+    print(f"[2/5] Push a Google Sheets...")
     sheet_results = push_snapshot(snapshot)
     for tab, r in sheet_results.items():
         if "error" in r:
@@ -44,17 +45,26 @@ def run(target_date: str) -> Path:
         else:
             print(f"      {tab}: appended={r['appended']} updated={r['updated']}")
 
-    print(f"[3/4] Pulling baseline 7d...")
+    print(f"[3/5] Pulling baseline 7d...")
     baseline = build_baseline(target_date)
 
-    print(f"[4/4] Analisis Claude (Opus 4.7, adaptive thinking)...")
+    print(f"[4/5] Analisis Claude (Opus 4.7, adaptive thinking)...")
     analysis_md = analyze(target_date, snapshot, baseline)
 
     REPORTS_DIR.mkdir(exist_ok=True)
     out_file = REPORTS_DIR / f"{target_date}.md"
     header = f"# Reporte diario Velenza - {target_date}\n\n"
-    out_file.write_text(header + analysis_md, encoding="utf-8")
+    full_md = header + analysis_md
+    out_file.write_text(full_md, encoding="utf-8")
     print(f"      reporte guardado en {out_file.relative_to(ROOT)}")
+
+    print(f"[5/5] Push a Notion...")
+    try:
+        notion_url = notion_upsert(target_date, snapshot, full_md)
+        print(f"      pagina Notion: {notion_url}")
+    except Exception as e:
+        print(f"      ERROR Notion (no critico): {e}")
+
     return out_file
 
 

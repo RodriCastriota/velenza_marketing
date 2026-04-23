@@ -36,6 +36,7 @@ jobs:
           GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SHEET_URL: ${{ secrets.SHEET_URL }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: |
           if [ -n "${{ github.event.inputs.target_date }}" ]; then
             python scripts/daily_report.py "${{ github.event.inputs.target_date }}"
