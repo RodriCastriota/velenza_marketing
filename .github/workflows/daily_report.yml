@@ -11,9 +11,6 @@ on:
         required: false
         default: ""
 
-permissions:
-  contents: write
-
 jobs:
   report:
     runs-on: ubuntu-latest
@@ -42,16 +39,4 @@ jobs:
             python scripts/daily_report.py "${{ github.event.inputs.target_date }}"
           else
             python scripts/daily_report.py
-          fi
-
-      - name: Commit report
-        run: |
-          git config user.name "velenza-bot"
-          git config user.email "bot@velenza.local"
-          git add reports/
-          if git diff --cached --quiet; then
-            echo "No hay nuevos reportes que commitear."
-          else
-            git commit -m "report: daily $(date -u +%Y-%m-%d)"
-            git push
           fi

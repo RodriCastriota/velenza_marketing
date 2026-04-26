@@ -1,6 +1,6 @@
 ---
 name: daily-report
-description: Genera el reporte diario de paid media Velenza (snapshot Meta + push a Sheets + analisis Claude + push a Notion). Usar cuando el usuario pida "el reporte de hoy", "como viene el dia", "el reporte de ayer", "reporte del <fecha>", o cualquier variacion sobre el reporte diario.
+description: Genera el reporte diario de paid media Velenza (snapshot Meta + push a Sheets + analisis Codex + push a Notion). Usar cuando el usuario pida "el reporte de hoy", "como viene el dia", "el reporte de ayer", "reporte del <fecha>", o cualquier variacion sobre el reporte diario.
 ---
 
 # Daily Report Velenza
@@ -18,7 +18,7 @@ El script hace:
 1. Pull snapshot Meta (campaigns/adsets/ads ACTIVE) del dia.
 2. Push a Google Sheets (upsert por date+entity_id).
 3. Pull baseline 7 dias previos.
-4. Analisis con Claude Opus 4.7 (adaptive thinking).
+4. Analisis con Codex Opus 4.7 (adaptive thinking).
 5. Push del markdown del analisis a Notion (unica salida persistente).
 
 Despues de correr el script, le mostras al usuario:

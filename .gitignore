@@ -3,6 +3,7 @@
 .gcp_sa.json
 .sheet_url
 .anthropic_key
+.notion_token
 *.env
 __pycache__/
 *.pyc

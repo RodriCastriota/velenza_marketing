@@ -42,11 +42,11 @@ Ambos archivos viven en la raiz del folder y estan en `.gitignore`.
 
 ```
 velenza_marketing/
-├── CLAUDE.md                    este archivo
+├── AGENTS.md                    este archivo
 ├── .meta_token                  System User Token (gitignored)
 ├── .gemini_key                  API key Gemini (gitignored)
 ├── .gitignore
-├── .claude/skills/              skills reutilizables
+├── .Codex/skills/              skills reutilizables
 ├── prompts/                     templates de prompts (Gemini, reportes)
 └── scripts/                     helpers Python
 ```
