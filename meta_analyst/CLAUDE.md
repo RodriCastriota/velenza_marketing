@@ -41,14 +41,22 @@ Ambos archivos viven en la raiz del folder y estan en `.gitignore`.
 ## Estructura
 
 ```
-velenza_marketing/
-├── CLAUDE.md                    este archivo
-├── .meta_token                  System User Token (gitignored)
-├── .gemini_key                  API key Gemini (gitignored)
+velenza_marketing/                raiz del repo (multi-agente)
+├── .git/
+├── .github/workflows/            workflows GitHub Actions (deben vivir aca)
 ├── .gitignore
-├── .claude/skills/              skills reutilizables
-├── prompts/                     templates de prompts (Gemini, reportes)
-└── scripts/                     helpers Python
+└── meta_analyst/                 ESTE agente (paid media analysis)
+    ├── CLAUDE.md                 este archivo
+    ├── AGENTS.md                 espejo para Codex
+    ├── .meta_token               System User Token Meta (gitignored)
+    ├── .gcp_sa.json              service account Google (gitignored)
+    ├── .anthropic_key            API key Anthropic (gitignored)
+    ├── .notion_token             token Notion (gitignored)
+    ├── .sheet_url                URL de la sheet (gitignored)
+    ├── .claude/skills/           skills reutilizables (Claude Code)
+    ├── .agents/skills/           skills reutilizables (Codex)
+    ├── requirements.txt
+    └── scripts/                  helpers Python
 ```
 
 ## Roadmap de skills
